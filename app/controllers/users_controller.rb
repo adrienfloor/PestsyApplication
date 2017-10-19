@@ -40,7 +40,7 @@ class UsersController < ApplicationController
 
   def edit
 
-    @user = User.find(session[:auth]['id'])
+    @user = current_user
 
   end
 
