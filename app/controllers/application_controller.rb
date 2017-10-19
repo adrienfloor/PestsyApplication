@@ -21,6 +21,12 @@ class ApplicationController < ActionController::Base
 
   end
 
+  def only_signed_out
+
+    redirect_to profil_path if user_signed_in?
+
+  end
+
   #retourne l'utilisateur actuellement connecté
 
   def current_user

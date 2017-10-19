@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
   skip_before_action :only_signed_in, only: [:new, :create, :confirm]
+  before_action :only_signed_out, only: [:new,:create, :confirm]
 
   def new
     @user = User.new
@@ -46,6 +47,13 @@ class UsersController < ApplicationController
 
   def update
 
+      @user = current_user
+      user_params = params.require(:user).permit(:username, :email, :firstname, :lastname, :avatar_file)
+      if @user.update(user_params)
+        redirect_to profil_path, success: "Votre compte a bien été mis à jour"
+      else
+        render :edit
+      end
 
 
   end
