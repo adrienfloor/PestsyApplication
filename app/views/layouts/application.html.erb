@@ -17,13 +17,29 @@
         </div>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="<%= new_user_path%>">S'inscrire</a></li>
-          <li><a href="">Se connecter</a></li>
+          <li><a href="<%= new_session_path %>">Se connecter</a></li>
         </ul>
       </div>
     </div>
 
     <div class="container">
+
+      <% if flash[:success] %>
+        <div class="alert alert-success">
+            <%= flash[:success] %>
+        </div>
+      <% end %>
+
+      <% if flash[:danger] %>
+        <div class="alert alert-danger">
+            <%= flash[:danger] %>
+        </div>
+      <% end %>
+
       <%= yield %>
+
+      <%= debug session[:auth] %>
+
     </div>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
