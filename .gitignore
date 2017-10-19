@@ -8,7 +8,7 @@
 /.bundle
 
 # Ignore all logfiles and tempfiles.
-database.yml
+/config/database.yml
 /log/*
 /tmp/*
 !/log/.keep
