@@ -16,6 +16,12 @@
 
     <%= form_for @user, url: profil_path, html:{class:'form-horizontal'} do |f| %>
 
+    <% if @user.avatar %>
+
+      <%= image_tag @user.avatar_url %>
+
+    <% end %>
+
     <div class="form-group">
       <%= f.label :avatar, "Avatar", class:'col-md-4 control-label' %>
       <div class="col-md-6">
