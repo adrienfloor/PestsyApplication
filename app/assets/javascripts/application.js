@@ -12,4 +12,13 @@
 //
 //= require rails-ujs
 //= require turbolinks
+//= require flatpickr
 //= require_tree .
+//= require_self
+
+
+flatpickr('.form-datepicker', {
+  altInput: true,
+  altFormat: 'j F Y',
+  maxDate: new Date()
+});

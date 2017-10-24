@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :posts
   root to: "users#new"
 
   get '/profil', to: 'users#edit', as: :profil
@@ -11,7 +12,7 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy', as: :destroy_session
 
-
+  resources :pets
   resources :passwords, only: [:new, :create, :edit, :update]
   # resources :sessions, only: [:new, :create]
   resources :users, only: [:new, :create] do

@@ -10,7 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171020100059) do
+ActiveRecord::Schema.define(version: 20171024131000) do
+
+  create_table "pets", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string "name"
+    t.string "gender"
+    t.date "birthday"
+    t.bigint "user_id"
+    t.bigint "species_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["species_id"], name: "index_pets_on_species_id"
+    t.index ["user_id"], name: "index_pets_on_user_id"
+  end
+
+  create_table "posts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string "name"
+    t.text "content"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_posts_on_user_id"
+  end
+
+  create_table "species", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string "name"
+    t.string "slug"
+    t.integer "pets_count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string "username"
@@ -26,4 +55,7 @@ ActiveRecord::Schema.define(version: 20171020100059) do
     t.string "recover_password"
   end
 
+  add_foreign_key "pets", "species"
+  add_foreign_key "pets", "users"
+  add_foreign_key "posts", "users"
 end
