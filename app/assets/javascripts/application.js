@@ -16,9 +16,15 @@
 //= require_tree .
 //= require_self
 
+document.addEventListener('turbolinks:load', function(){
 
-flatpickr('.form-datepicker', {
-  altInput: true,
-  altFormat: 'j F Y',
-  maxDate: new Date()
+  flatpickr('.form-datepicker', {
+    altInput: true,
+    altFormat: 'j F Y',
+    maxDate: new Date()
+  });
+
+  $('select[multiple]').select2();
+
+
 });

@@ -11,6 +11,7 @@
   <table class="table table-striped">
     <thead>
       <tr>
+          <th>Image</th>
           <th>Name</th>
           <th>Content</th>
           <th>User</th>
@@ -21,9 +22,9 @@
     <tbody>
       <% @posts.each do |post| %>
         <tr>
+            <td><%= image_tag post.image_url(:thumb) %></td>
             <td><%= post.name %></td>
             <td><%= post.content %></td>
-            <td><%= post.user %></td>
             <td>
             <%= link_to 'Voir', post, class:'btn btn-default' %>
             <%= link_to 'Modifier', edit_post_path(post), class:'btn btn-primary' %>

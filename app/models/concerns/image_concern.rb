@@ -5,7 +5,7 @@ module ImageConcern
   module ClassMethods
 
     def has_image(field, options = {})
-        options[:resize] = 150 if options[:resize].nil?
+        options[:resize] = '150x150!' if options[:resize].nil?
         attr_accessor "#{field}_file".to_sym
         validates "#{field}_file".to_sym, file: {ext: [:jpg, :png]}
         before_save "#{field}_before_upload".to_sym
@@ -14,11 +14,12 @@ module ImageConcern
 
         class_eval <<-METHODS, __FILE__, __LINE__ + 1
 
-        def #{field}_url
+        def #{field}_url(format = nil)
+          format = "_\#{format}" unless format.nil?
           '/uploads/' + [
             self.class.name.downcase.pluralize,
             id.to_s,
-            '#{field}.jpg'
+            "#{field}\#{format}.jpg"
           ].join('/')
         end
 
@@ -45,16 +46,32 @@ module ImageConcern
         def #{field}_after_upload
 
           path = #{field}_path
+          options = #{options}
           if #{field}_file.respond_to? :path
-          dir = File.dirname(path)
+            dir = File.dirname(path)
             FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
             image = MiniMagick::Image.new(#{field}_file.path) do |b|
-              b.resize '#{options[:resize]} x #{options[:resize]}^'
-              b.gravity 'Center'
-              b.crop '#{options[:resize]} x #{options[:resize]}+0+0+'
+              if options[:resize].ends_with?('!')
+                b.resize '#{options[:resize].delete('!')}^'
+                b.gravity 'Center'
+                b.crop '#{options[:resize].delete('!')}+0+0'
+              else
+                b.resize '#{options[:resize].delete('!')}\>'
+              end
             end
             image.format 'jpg'
             image.write path
+            if options[:formats]
+               options[:formats].each do |k, v|
+               image = MiniMagick::Image.new(#{field}_file.path) do |b|
+                  b.resize "\#{v}^"
+                  b.gravity 'Center'
+                  b.crop "\#{v}+0+0"
+               end
+               image.format 'jpg'
+               image.write path.gsub('.jpg', "_\#{k}.jpg")
+              end
+            end
           end
         end
 
